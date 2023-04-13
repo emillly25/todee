@@ -8,7 +8,8 @@ class TaskTile extends StatelessWidget {
   final Function checkboxCallback;
 
   TaskTile(
-      {this.isDone = false,
+      {super.key,
+      this.isDone = false,
       required this.taskTitle,
       required this.checkboxCallback});
 
@@ -30,11 +31,3 @@ class TaskTile extends StatelessWidget {
     );
   }
 }
-
-// void onChangeCallback(bool value) {
-//   if (value != null) {
-//     setState(() {
-//       isDone = value;
-//     });
-//   }
-// }

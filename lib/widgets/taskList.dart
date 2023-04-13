@@ -3,17 +3,14 @@ import '../models/task.dart';
 import '../widgets/taskTile.dart';
 
 class TaskList extends StatefulWidget {
+  final List<Task> tasks;
+  const TaskList(this.tasks, {super.key});
+
   @override
   State<TaskList> createState() => _TaskListState();
 }
 
 class _TaskListState extends State<TaskList> {
-  List<Task> tasks = [
-    Task(name: 'task1'),
-    Task(name: 'task2'),
-    Task(name: 'task3'),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -21,15 +18,15 @@ class _TaskListState extends State<TaskList> {
         //context는 현재 taskList의 context
         //idx는 랜더링 하는 순서를 말함 -> 배열의 idx 아님
         return TaskTile(
-            taskTitle: tasks[idx].name,
-            isDone: tasks[idx].isDone,
+            taskTitle: widget.tasks[idx].name,
+            isDone: widget.tasks[idx].isDone,
             checkboxCallback: (bool value) {
               setState(() {
-                tasks[idx].toggleDone();
+                widget.tasks[idx].toggleDone();
               });
             });
       },
-      itemCount: tasks.length, //설정 하는 것이 중요!
+      itemCount: widget.tasks.length, //설정 하는 것이 중요!
     );
   }
 }

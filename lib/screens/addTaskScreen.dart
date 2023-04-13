@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({Key? key}) : super(key: key);
+class AddTaskScreen extends StatefulWidget {
+  final Function onAddEvt;
+
+  AddTaskScreen(this.onAddEvt);
+
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  late String textInput;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(0xFF757575),
+      color: const Color(0xFF757575),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -27,18 +36,25 @@ class AddTaskScreen extends StatelessWidget {
                 fontSize: 30,
               ),
             ),
-            const TextField(
+            TextField(
               autofocus: true,
               textAlign: TextAlign.center,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: UnderlineInputBorder(
                   borderSide: BorderSide(width: 3, color: Colors.amberAccent),
                 ),
               ),
+              onChanged: (value) {
+                setState(() {
+                  textInput = value;
+                });
+              },
             ),
             const SizedBox(height: 10),
             OutlinedButton(
-              onPressed: null,
+              onPressed: () {
+                widget.onAddEvt(textInput);
+              },
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.lightBlueAccent,
               ),

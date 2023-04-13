@@ -1,29 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todowee/screens/addTaskScreen.dart';
-import '../widgets/taskList.dart';
-import '../models/task.dart';
+import 'package:todowee/widgets/taskList.dart';
+import 'package:todowee/models/task_data.dart';
 
-class TaskScreen extends StatefulWidget {
-  @override
-  State<TaskScreen> createState() => _TaskScreenState();
-}
-
-class _TaskScreenState extends State<TaskScreen> {
-  List<Task> tasks = [
-    Task(name: 'task1'),
-    Task(name: 'task2'),
-    Task(name: 'task3'),
-  ];
-
-  void onAddEvt(value) {
-    setState(() {
-      tasks.add(
-        Task(name: value),
-      );
-    });
-    Navigator.pop(context);
-  }
-
+class TaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +17,7 @@ class _TaskScreenState extends State<TaskScreen> {
           showModalBottomSheet(
             // isScrollControlled: true, //전체보기로 띄우기(fullScreen)
             context: context,
-            builder: (context) => AddTaskScreen(onAddEvt),
+            builder: (context) => AddTaskScreen(),
           );
         },
       ),
@@ -65,7 +46,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  '${tasks.length} Tasks',
+                  '${Provider.of<TaskData>(context).taskCount} Tasks',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -85,7 +66,7 @@ class _TaskScreenState extends State<TaskScreen> {
                   topRight: Radius.circular(20),
                 ),
               ),
-              child: TaskList(tasks),
+              child: TaskList(),
             ),
           ),
         ],

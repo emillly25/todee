@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import '../models/task.dart';
-import '../widgets/taskTile.dart';
+import 'package:todowee/widgets/taskTile.dart';
+import 'package:todowee/models/task_data.dart';
+import 'package:provider/provider.dart';
 
-class TaskList extends StatefulWidget {
-  final List<Task> tasks;
-  const TaskList(this.tasks, {super.key});
-
-  @override
-  State<TaskList> createState() => _TaskListState();
-}
-
-class _TaskListState extends State<TaskList> {
+class TaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemBuilder: (context, idx) {
-        //context는 현재 taskList의 context
-        //idx는 랜더링 하는 순서를 말함 -> 배열의 idx 아님
-        return TaskTile(
-            taskTitle: widget.tasks[idx].name,
-            isDone: widget.tasks[idx].isDone,
-            checkboxCallback: (bool value) {
-              setState(() {
-                widget.tasks[idx].toggleDone();
-              });
-            });
+    return Consumer<TaskData>(
+      builder: (context, whatever, child) {
+        return ListView.builder(
+          itemBuilder: (context, idx) {
+            //idx는 랜더링 하는 순서를 말함 -> 배열의 idx 아님
+            //그래서 몇개를 랜더링 시킬지 itemCount 설정이 반드시 필요!
+            final task = whatever.tasks[idx];
+            return TaskTile(
+              taskTitle: task.name,
+              isDone: task.isDone,
+              checkboxCallback: (bool value) {
+                whatever.updateTask(task);
+              },
+              longPressCallback: () {
+                whatever.deleteTask(task);
+              },
+            );
+          },
+          itemCount: whatever.taskCount,
+        );
       },
-      itemCount: widget.tasks.length, //설정 하는 것이 중요!
     );
   }
 }

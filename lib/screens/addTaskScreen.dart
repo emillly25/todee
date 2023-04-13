@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todowee/models/task_data.dart';
 
 class AddTaskScreen extends StatefulWidget {
-  final Function onAddEvt;
-
-  AddTaskScreen(this.onAddEvt);
-
   @override
   State<AddTaskScreen> createState() => _AddTaskScreenState();
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  late String textInput;
-
+  String textInput = '';
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,15 +42,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 ),
               ),
               onChanged: (value) {
-                setState(() {
-                  textInput = value;
-                });
+                textInput = value;
               },
             ),
             const SizedBox(height: 10),
             OutlinedButton(
               onPressed: () {
-                widget.onAddEvt(textInput);
+                Provider.of<TaskData>(context, listen: false)
+                    .addTask(textInput);
+
+                Navigator.pop(context);
               },
               style: OutlinedButton.styleFrom(
                 backgroundColor: Colors.lightBlueAccent,
